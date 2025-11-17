@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ParadaContainer } from "./styles";
+import { ParadaContainer } from "../../styles/ParadaContentStyles";
 import PitstopTitle from "../../components/PitstopTitle";
 import ParadaContent1_1 from "../../components/ParadaContent1-1";
 import ParadaContent1_2 from "../../components/ParadaContent1-2";

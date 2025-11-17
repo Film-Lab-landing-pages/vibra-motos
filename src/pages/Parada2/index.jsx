@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ParadaContainer } from "./styles";
+import { ParadaContainer } from "../../styles/ParadaContentStyles";
 import PitstopTitle from "../../components/PitstopTitle";
 import ParadaContent1_1 from "../../components/ParadaContent1-1";
 import ParadaContent1_2 from "../../components/ParadaContent1-2";
@@ -62,7 +62,7 @@ const ParadaNavigation = () => {
     if (activeContentId < totalContents) {
       setActiveContent(activeContentId + 1);
       // Scroll para o topo ao avançar conteúdo
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       // Se está no último conteúdo, navega para Quiz1
       navigate("/quiz1");
@@ -73,7 +73,7 @@ const ParadaNavigation = () => {
     if (activeContentId > 1) {
       setActiveContent(activeContentId - 1);
       // Scroll para o topo ao voltar conteúdo
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
