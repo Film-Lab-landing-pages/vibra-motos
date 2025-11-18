@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ParadaContainer } from "../../styles/ParadaContentStyles";
+import { NextButton } from "../../styles/ButtonStyles";
 import PitstopTitle from "../../components/PitstopTitle";
 import ParadaContent1_1 from "../../components/ParadaContent1-1";
 import ParadaContent1_2 from "../../components/ParadaContent1-2";
@@ -65,8 +66,8 @@ const ParadaNavigation = () => {
       // Scroll para o topo ao avançar conteúdo
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // Se está no último conteúdo, navega para Quiz1
-      navigate("/quiz1");
+      // Se está no último conteúdo, navega para Retrovisor1
+      navigate("/retrovisor1");
     }
   };
 
@@ -94,12 +95,10 @@ const ParadaNavigation = () => {
           pointerEvents: isFirstContent ? "none" : "auto",
         }}
       />
-      <img
-        className="next-button"
+      <NextButton
         src={avancar}
         alt={isLastContent ? "Ir para Quiz" : "Avançar"}
         onClick={handleNext}
-        style={{ cursor: "pointer" }}
       />
     </div>
   );

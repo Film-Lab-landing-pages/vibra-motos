@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { GlobalContainer } from "../../styles/GlobalStyles";
 
+// Exportar NextButton para uso neste módulo
+export { NextButton } from "../../styles/ButtonStyles";
+
 export const ModuleMain = styled.main`
   overflow-x: hidden;
   .tarja {
@@ -76,13 +79,6 @@ export const VideoSection = styled.section`
     border-radius: 16px;
     border: #808080 solid 2px;
     box-shadow: 4px 10px 12px rgba(0, 0, 0, 0.5);
-  }
-
-  .next-button {
-    margin-top: 2rem;
-    align-self: flex-end;
-    width: 10rem;
-    cursor: pointer;
   }
 
   iframe {

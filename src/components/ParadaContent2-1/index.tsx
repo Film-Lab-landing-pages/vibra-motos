@@ -6,9 +6,14 @@ import {
   Paragraphs,
   ContentImage,
 } from "./styles";
-import mapaMoto from "../../assets/mapa-moto.png";
+import mapaMoto from "../../assets/img-parada-2-1.png";
+import {
+  TitledParagraph,
+  TitledList,
+  NormalParagraph,
+} from "../SmartParagraphs";
 
-interface ParadaContent1_1Props {
+interface ParadaContent2_1Props {
   number?: string;
   secondaryTitle?: string;
   primaryTitle?: string;
@@ -17,13 +22,9 @@ interface ParadaContent1_1Props {
   imageAlt?: string;
 }
 
-const ParadaContent1_1: React.FC<ParadaContent1_1Props> = ({
+const ParadaContent2_1: React.FC<ParadaContent2_1Props> = ({
   number = "1",
 
-  paragraphs = [
-    "O Brasil é um dos países com maior número de motocicletas no mundo. Segundo dados do Departamento Nacional de Trânsito (Denatran), em 2023 já eram mais de 31 milhões de motos registradas, representando cerca de 30% de toda a frota de veículos. Esse número não para de crescer, especialmente em cidades médias e pequenas, onde a moto é uma solução mais barata e prática do que o transporte público.",
-    "Mas a moto não é apenas um meio de transporte. Para milhões de brasileiros, ela é uma ferramenta de trabalho: mototaxistas, entregadores, profissionais de manutenção e tantos outros dependem dela para garantir a própria renda. Por outro lado, para muitos apaixonados, a moto é também sinônimo de lazer, seja em passeios de fim de semana, seja em viagens longas pelas estradas do país.",
-  ],
   imageSrc = mapaMoto,
   imageAlt = "Motocicleta com mapa do brasil no fundo",
 }) => {
@@ -33,17 +34,31 @@ const ParadaContent1_1: React.FC<ParadaContent1_1Props> = ({
         <Title>
           <h1 className="number">{number}</h1>
           <div className="title-text">
-            <h2>O país dos</h2>
             <h2>
-              <span>motociclistas</span>
+              O <span> pacto diário </span>
             </h2>
+            <h2>da segurança</h2>
           </div>
         </Title>
 
         <Paragraphs>
-          {paragraphs.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+          <NormalParagraph>
+            Antes de ligar a moto, a segurança começa na mente. A forma como o
+            piloto encara o trânsito é determinante para o desfecho de cada
+            trajeto.
+          </NormalParagraph>
+
+          <TitledList
+            items={[
+              "Postura mental preventiva: cada deslocamento deve ser tratado como único. Estudos da Associação Brasileira de Medicina de Tráfego (Abramet) mostram que boa parte dos acidentes ocorre a menos de 5 km de casa ou do trabalho. A familiaridade com o trajeto gera excesso de confiança, e é justamente aí que muitos se descuidam.",
+              "Autocontrole emocional: pressa, raiva ou competitividade no trânsito transformam situações simples em riscos desnecessários. Pesquisas indicam que condutores agressivos têm até 70% mais chances de se envolver em colisões.",
+              "Consciência coletiva: cada atitude influencia não só o motociclista, mas pedestres, ciclistas, motoristas e passageiros. A moto pode ser ágil, mas a vulnerabilidade exige que o motociclista aja sempre com empatia.",
+            ]}
+          />
+          <NormalParagraph>
+            Essa mentalidade cria a base para as práticas de segurança que
+            veremos a seguir.
+          </NormalParagraph>
         </Paragraphs>
       </Text>
 
@@ -52,4 +67,4 @@ const ParadaContent1_1: React.FC<ParadaContent1_1Props> = ({
   );
 };
 
-export default ParadaContent1_1;
+export default ParadaContent2_1;

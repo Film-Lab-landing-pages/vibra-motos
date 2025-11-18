@@ -14,6 +14,7 @@ import {
   BackgroundImages,
   IntroSection,
   VideoSection,
+  NextButton,
 } from "./styles";
 
 const Modulo1 = () => {
@@ -56,13 +57,7 @@ const Modulo1 = () => {
             allowFullScreen
           ></iframe>
         </div>
-        <img
-          className="next-button"
-          src={avancar}
-          alt="Avançar"
-          onClick={handleNext}
-          style={{ cursor: "pointer" }}
-        />
+        <NextButton src={avancar} alt="Avançar" onClick={handleNext} />
       </VideoSection>
     </ModuleMain>
   );

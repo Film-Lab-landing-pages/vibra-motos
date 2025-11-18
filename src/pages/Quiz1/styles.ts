@@ -99,8 +99,18 @@ export const QuizBackground = styled.div`
 
         &.selected {
           background-color: var(--primary-color);
-
           border: 1px solid var(--accent-green-primary);
+        }
+
+        /* Estados após responder */
+        &.correct {
+          border: 2px solid #22c55e !important; /* Verde */
+          background-color: #dcfce7; /* Verde claro */
+        }
+
+        &.incorrect {
+          background-color: #fecaca !important; /* Vermelho claro */
+          border: 1px solid #ef4444 !important; /* Vermelho */
         }
 
         /* Bullet que fica da cor accent-primary quando selecionado */

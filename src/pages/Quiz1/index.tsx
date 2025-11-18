@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { QuizContainer, QuizBackground } from "./styles";
 import quizBackground from "../../assets/quiz-background.png";
 import seta from "../../assets/seta.png";
@@ -11,6 +12,11 @@ const Quiz1: React.FC = () => {
     Record<number, string>
   >({});
   const [isCompleted, setIsCompleted] = useState(false);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(
+    new Set()
+  );
+
+  const navigate = useNavigate();
 
   // Hook SCORM para comunicação com LMS
   const scormHook = useScorm();
@@ -33,10 +39,15 @@ const Quiz1: React.FC = () => {
     return { correct, total: QUIZ1_DATA.questions.length, percentage };
   };
 
+  // Função para avançar para a Parada 2
+  const handleAdvanceToParada2 = () => {
+    navigate("/parada2");
+  };
+
   // Debug log
   console.log("Estado isCompleted:", isCompleted);
 
-  // Se o quiz foi concluído, mostrar tela provisória
+  // Se o quiz foi concluído, mostrar tela de resultado
   if (isCompleted) {
     console.log("Renderizando tela de resultado");
     const scoreData = calculateScore();
@@ -53,9 +64,7 @@ const Quiz1: React.FC = () => {
             />
             <div className="text-container">
               <div className="provisional-screen">
-                <h2 className="provisional-title">
-                  🚧 TELA PROVISÓRIA DE TESTE 🚧
-                </h2>
+                <h2 className="provisional-title">Quiz Concluído!</h2>
                 <div className="score-display">
                   <h3 className="score-title">Resultado do Quiz</h3>
                   <div className="score-info">
@@ -75,25 +84,22 @@ const Quiz1: React.FC = () => {
                 </div>
                 <div className="test-info">
                   <p className="test-note">
-                    Esta é uma tela provisória para checkpoint de
-                    desenvolvimento.
-                  </p>
-                  <p className="test-note">
                     Score registrado no sistema SCORM: {scoreData.percentage}%
                   </p>
+                  <p className="test-note">
+                    Parabéns! Agora você pode avançar para a próxima parada.
+                  </p>
                 </div>
-                <button
-                  className="quiz-button retry"
-                  onClick={() => {
-                    setCurrentQuestionIndex(0);
-                    setSelectedAnswers({});
-                    setIsCompleted(false);
-                  }}
-                >
-                  <p className="button-text">REFAZER QUIZ</p>
-                </button>
               </div>
             </div>
+            <button
+              className="quiz-button"
+              onClick={handleAdvanceToParada2}
+              style={{ marginTop: "2rem" }}
+            >
+              <p className="button-text">AVANÇAR PARA PARADA 2</p>
+              <img className="seta" src={seta} alt="Seta" />
+            </button>
           </QuizBackground>
         </QuizContainer>
       </div>
@@ -102,6 +108,7 @@ const Quiz1: React.FC = () => {
 
   const currentQuestion = QUIZ1_DATA.questions[currentQuestionIndex];
   const selectedAnswer = selectedAnswers[currentQuestion.id];
+  const isQuestionAnswered = answeredQuestions.has(currentQuestion.id);
 
   const handleAnswerSelect = (answerId: string) => {
     setSelectedAnswers((prev) => ({
@@ -111,6 +118,16 @@ const Quiz1: React.FC = () => {
   };
 
   const handleNext = () => {
+    const currentQuestionId = currentQuestion.id;
+    const isQuestionAnswered = answeredQuestions.has(currentQuestionId);
+
+    if (!isQuestionAnswered) {
+      // Primeira ação: RESPONDER - marcar a questão como respondida
+      setAnsweredQuestions((prev) => new Set([...prev, currentQuestionId]));
+      return;
+    }
+
+    // Segunda ação: PRÓXIMA - avançar para próxima questão ou finalizar
     console.log(
       "handleNext chamado - currentQuestionIndex:",
       currentQuestionIndex
@@ -172,15 +189,37 @@ const Quiz1: React.FC = () => {
             <p className="question-text">{currentQuestion.question}</p>
 
             <ul className="options">
-              {currentQuestion.options.map((option) => (
-                <li
-                  key={option.id}
-                  className={selectedAnswer === option.id ? "selected" : ""}
-                  onClick={() => handleAnswerSelect(option.id)}
-                >
-                  {option.id}) {option.text}
-                </li>
-              ))}
+              {currentQuestion.options.map((option) => {
+                const isSelected = selectedAnswer === option.id;
+                const isCorrect = option.id === currentQuestion.correctAnswer;
+
+                let className = "";
+                if (isSelected) className += "selected ";
+
+                if (isQuestionAnswered) {
+                  if (isSelected && !isCorrect) {
+                    className += "incorrect ";
+                  }
+                  if (isCorrect) {
+                    className += "correct ";
+                  }
+                }
+
+                return (
+                  <li
+                    key={option.id}
+                    className={className.trim()}
+                    onClick={() =>
+                      !isQuestionAnswered && handleAnswerSelect(option.id)
+                    }
+                    style={{
+                      cursor: isQuestionAnswered ? "default" : "pointer",
+                    }}
+                  >
+                    {option.id}) {option.text}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -190,7 +229,9 @@ const Quiz1: React.FC = () => {
             disabled={!selectedAnswer}
           >
             <p className="button-text">
-              {currentQuestionIndex === QUIZ1_DATA.questions.length - 1
+              {!isQuestionAnswered
+                ? "RESPONDER"
+                : currentQuestionIndex === QUIZ1_DATA.questions.length - 1
                 ? "FINALIZAR"
                 : "PRÓXIMA"}
             </p>

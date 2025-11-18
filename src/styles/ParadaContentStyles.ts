@@ -53,8 +53,7 @@ export const BaseContentWrapper = styled.div<BaseContentWrapperProps>`
     padding: 0 5rem;
     display: flex;
     flex-direction: column;
-    gap: -10px;
-    flex: 2;
+    gap: 2rem;
   }
 
   .content-image {
@@ -72,7 +71,7 @@ interface BaseTextProps {
 }
 
 export const BaseText = styled.div<BaseTextProps>`
-  font-size: 16px;
+  font-size: 20px;
   font-family: var(--font-family);
 
   ${(props) => css`
@@ -85,7 +84,7 @@ export const BaseText = styled.div<BaseTextProps>`
 
   .chamada,
   .conclusao {
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.6;
     color: var(--primary-color);
     text-align: justify;
@@ -161,7 +160,7 @@ export const BaseParagraphs = styled.div<BaseParagraphsProps>`
   gap: 1rem;
 
   p {
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.6;
     color: var(--primary-color);
     margin: 0;
@@ -192,7 +191,7 @@ export const BaseParagraphs = styled.div<BaseParagraphsProps>`
       }
 
       li {
-        font-size: 16px;
+        font-size: 20px;
         line-height: 1.6;
         color: var(--primary-color);
         text-align: justify;
@@ -256,11 +255,13 @@ export const ContentImage = styled.img`
 `;
 
 export const ContentImageVariant2 = styled(ContentImage)`
-  height: 200px;
+  height: 150px;
 `;
 
 export const ContentImageVariant4 = styled(ContentImage)`
   width: 52%;
+  height: auto;
+  object-fit: contain;
   padding: 0 2rem;
   margin-top: -4rem;
 `;
@@ -307,7 +308,7 @@ export const ParadaContainer = styled.div`
     .next-button,
     .back-button {
       margin-top: 4rem;
-      width: 10rem;
+      width: 11rem;
       cursor: pointer;
     }
   }
