@@ -8,8 +8,15 @@ import { useScorm } from "../../hooks/useScorm";
 import QuizFeedback from "../../components/QuizFeedback";
 import { NextButton } from "../../styles/ButtonStyles";
 import avancar from "../../assets/avancar.png";
+import { useQuizScores } from "../../store/quizScoresStore";
+import { shuffleQuestionOptions } from "../../utils/shuffleUtils";
 
 const Quiz1: React.FC = () => {
+  // Embaralha as questões uma única vez na inicialização
+  const [shuffledQuestions] = useState(() =>
+    QUIZ1_DATA.questions.map((question) => shuffleQuestionOptions(question))
+  );
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<number, string>
@@ -25,25 +32,29 @@ const Quiz1: React.FC = () => {
   const scormHook = useScorm();
   const { completeLesson } = scormHook;
 
+  // Store para armazenar scores dos quizzes
+  const { setQuiz1Score } = useQuizScores();
+
   console.log("useScorm retornou:", scormHook);
   console.log("completeLesson:", completeLesson);
 
   // Função para calcular pontuação
   const calculateScore = () => {
     let correct = 0;
-    QUIZ1_DATA.questions.forEach((question) => {
+    shuffledQuestions.forEach((question) => {
       if (selectedAnswers[question.id] === question.correctAnswer) {
         correct++;
       }
     });
-    const percentage = Math.round(
-      (correct / QUIZ1_DATA.questions.length) * 100
-    );
-    return { correct, total: QUIZ1_DATA.questions.length, percentage };
+    const percentage = Math.round((correct / shuffledQuestions.length) * 100);
+    return { correct, total: shuffledQuestions.length, percentage };
   };
 
   // Função para avançar para a Parada 2
   const handleAdvanceToParada2 = () => {
+    // Salva o score do Quiz1 antes de navegar
+    const scoreData = calculateScore();
+    setQuiz1Score(scoreData);
     navigate("/parada2");
   };
 
@@ -74,7 +85,7 @@ const Quiz1: React.FC = () => {
     );
   }
 
-  const currentQuestion = QUIZ1_DATA.questions[currentQuestionIndex];
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const selectedAnswer = selectedAnswers[currentQuestion.id];
   const isQuestionAnswered = answeredQuestions.has(currentQuestion.id);
 
@@ -100,9 +111,9 @@ const Quiz1: React.FC = () => {
       "handleNext chamado - currentQuestionIndex:",
       currentQuestionIndex
     );
-    console.log("Total de questões:", QUIZ1_DATA.questions.length);
+    console.log("Total de questões:", shuffledQuestions.length);
 
-    if (currentQuestionIndex < QUIZ1_DATA.questions.length - 1) {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       console.log("Finalizando quiz...");
@@ -146,7 +157,7 @@ const Quiz1: React.FC = () => {
 
           {/* Indicador de progresso em posição absoluta */}
           <div className="progress-indicator">
-            {currentQuestionIndex + 1} de {QUIZ1_DATA.questions.length}
+            {currentQuestionIndex + 1} de {shuffledQuestions.length}
           </div>
 
           <div className="text-container">
@@ -199,7 +210,7 @@ const Quiz1: React.FC = () => {
             <p className="button-text">
               {!isQuestionAnswered
                 ? "RESPONDER"
-                : currentQuestionIndex === QUIZ1_DATA.questions.length - 1
+                : currentQuestionIndex === shuffledQuestions.length - 1
                 ? "FINALIZAR"
                 : "PRÓXIMA"}
             </p>

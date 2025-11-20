@@ -1,5 +1,26 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { GlobalContainer } from "../../styles/GlobalStyles";
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+const fadeInDelay = keyframes`
+
+    0% {
+      opacity: 0;
+    }
+    35% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  `;
 
 // Exportar NextButton para uso neste módulo
 export { NextButton } from "../../styles/ButtonStyles";
@@ -25,7 +46,10 @@ export const ModuleContainer = styled(GlobalContainer)`
   display: flex;
   flex-direction: column;
 
+  animation: ${fadeInDelay} 2s ease-in-out;
+
   justify-content: space-between;
+
   .intro {
     margin-top: 3rem;
   }
@@ -37,10 +61,11 @@ export const ModuleContainer = styled(GlobalContainer)`
     max-width: 500px;
     font-weight: 700;
     font-style: Bold Italic;
-    font-size: 48px;
+    font-size: 40px;
     line-height: 1.2;
   }
 `;
+
 export const BackgroundImages = styled.div`
   position: absolute;
   z-index: -1;
@@ -50,16 +75,28 @@ export const BackgroundImages = styled.div`
   img {
     position: absolute;
   }
+
   .intro-image {
     top: 0;
     right: 0;
     height: 80%;
+    @keyframes slideLeft {
+      from {
+        transform: translateX(10%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    animation: ${fadeIn} 1.5s ease-in-out, slideLeft 1s ease-in-out;
   }
   .marca {
     top: 65%;
     left: 40%;
     transform: translateX(-50%);
     width: 30%;
+    animation: ${fadeInDelay} 2s ease-in-out;
   }
 `;
 

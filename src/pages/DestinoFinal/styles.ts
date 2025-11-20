@@ -14,6 +14,8 @@ export const ContentWrapper = styled(BaseContentWrapper)`
 
   .body {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 4rem 10%;
   }
   .image-header {
@@ -38,7 +40,8 @@ export const ContentWrapper = styled(BaseContentWrapper)`
 export const Text = styled(FramedTextTarja1)``;
 export const Title = styled(BaseTitle)`
   margin: 2rem auto 4rem;
-
+  text-align: center;
+  display: block;
   .title-text h2 {
     font-size: 58px;
     color: var(--secondary-color);

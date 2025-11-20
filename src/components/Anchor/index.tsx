@@ -100,7 +100,13 @@ const Anchor: React.FC<AnchorProps> = ({
         <h3 className="number">{number}</h3>
         <p className="title">{title}</p>
       </div>
-      <div className={`icon ${isOpenState || isVisited ? "open" : ""}`}>
+      <div
+        className={`icon ${isOpenState || isVisited ? "open" : ""}`}
+        onClick={handlePointClick}
+        style={{
+          cursor: isClickable ? "pointer" : "not-allowed",
+        }}
+      >
         <img src={iconSrc} alt={`icon ${position + 1}`} />
       </div>
     </AnchorWrapper>

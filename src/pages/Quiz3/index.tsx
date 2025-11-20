@@ -6,15 +6,24 @@ import seta from "../../assets/seta.png";
 import { QUIZ3_DATA } from "../../data/quiz3Data";
 import { useScorm } from "../../hooks/useScorm";
 import QuizFeedback from "../../components/QuizFeedback";
+import CourseFeedback from "../../components/CourseFeedback";
 import { NextButton } from "../../styles/ButtonStyles";
 import avancar from "../../assets/avancar.png";
+import { useQuizScores } from "../../store/quizScoresStore";
+import { shuffleQuestionOptions } from "../../utils/shuffleUtils";
 
 const Quiz3: React.FC = () => {
+  // Embaralha as questões uma única vez na inicialização
+  const [shuffledQuestions] = useState(() =>
+    QUIZ3_DATA.questions.map((question) => shuffleQuestionOptions(question))
+  );
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<number, string>
   >({});
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showCourseFeedback, setShowCourseFeedback] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(
     new Set()
   );
@@ -25,36 +34,71 @@ const Quiz3: React.FC = () => {
   const scormHook = useScorm();
   const { completeLesson } = scormHook;
 
+  // Store para armazenar scores dos quizzes
+  const { setQuiz3Score, getTotalScore } = useQuizScores();
+
   console.log("useScorm retornou:", scormHook);
   console.log("completeLesson:", completeLesson);
 
   // Função para calcular pontuação
   const calculateScore = () => {
     let correct = 0;
-    QUIZ3_DATA.questions.forEach((question) => {
+    shuffledQuestions.forEach((question) => {
       if (selectedAnswers[question.id] === question.correctAnswer) {
         correct++;
       }
     });
-    const percentage = Math.round(
-      (correct / QUIZ3_DATA.questions.length) * 100
-    );
-    return { correct, total: QUIZ3_DATA.questions.length, percentage };
+    const percentage = Math.round((correct / shuffledQuestions.length) * 100);
+    return { correct, total: shuffledQuestions.length, percentage };
   };
 
-  // Função para continuar para Parada3
-  const handleContinueToParada3 = () => {
-    navigate("/"); // Vai para Parada3
+  // Função para continuar para o feedback do curso
+  const handleContinueToCourseFeedback = () => {
+    // Salva o score do Quiz3
+    const scoreData = calculateScore();
+    setQuiz3Score(scoreData);
+    setShowCourseFeedback(true);
+  };
+
+  // Função para finalizar o curso
+  const handleCourseComplete = () => {
+    // Calcular score total e determinar se passou
+    const totalScore = getTotalScore();
+    const passed = totalScore.correct >= 8; // Desempenho alto = passou
+
+    // Marcar curso como completo no SCORM
+    if (completeLesson) {
+      completeLesson(totalScore.percentage, passed);
+    }
+    // Navegar para página final ou início
+    navigate("/destinofinal");
   };
 
   // Debug log
   console.log("Estado isCompleted:", isCompleted);
 
-  // Se o quiz foi concluído, mostrar tela de resultado
+  // Se deve mostrar o feedback do curso
+  if (showCourseFeedback) {
+    const totalScore = getTotalScore();
+
+    return (
+      <div>
+        <CourseFeedback
+          totalScore={totalScore}
+          nextButton={
+            <NextButton onClick={handleCourseComplete}>
+              <img src={avancar} alt="Finalizar Curso" />
+            </NextButton>
+          }
+        />
+      </div>
+    );
+  }
+
+  // Se o quiz foi concluído, mostrar tela de resultado do Quiz3
   if (isCompleted) {
-    console.log("Renderizando tela de resultado");
+    console.log("Renderizando tela de resultado do Quiz3");
     const scoreData = calculateScore();
-    const passed = scoreData.percentage >= 70;
 
     return (
       <div>
@@ -65,8 +109,8 @@ const Quiz3: React.FC = () => {
             percentage: scoreData.percentage,
           }}
           nextButton={
-            <NextButton onClick={handleContinueToParada3}>
-              <img src={avancar} alt="Avançar" />
+            <NextButton onClick={handleContinueToCourseFeedback}>
+              <img src={avancar} alt="Ver Resultado Final" />
             </NextButton>
           }
         />
@@ -74,7 +118,7 @@ const Quiz3: React.FC = () => {
     );
   }
 
-  const currentQuestion = QUIZ3_DATA.questions[currentQuestionIndex];
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const selectedAnswer = selectedAnswers[currentQuestion.id];
   const isQuestionAnswered = answeredQuestions.has(currentQuestion.id);
 
@@ -95,7 +139,7 @@ const Quiz3: React.FC = () => {
       setAnsweredQuestions((prev) => new Set([...prev, currentQuestion.id]));
     } else {
       // Navegação entre perguntas
-      if (currentQuestionIndex === QUIZ3_DATA.questions.length - 1) {
+      if (currentQuestionIndex === shuffledQuestions.length - 1) {
         // Última pergunta - finalizar quiz
         setIsCompleted(true);
 
@@ -132,7 +176,7 @@ const Quiz3: React.FC = () => {
 
           {/* Indicador de progresso em posição absoluta */}
           <div className="progress-indicator">
-            {currentQuestionIndex + 1} de {QUIZ3_DATA.questions.length}
+            {currentQuestionIndex + 1} de {shuffledQuestions.length}
           </div>
 
           <div className="text-container">
@@ -185,7 +229,7 @@ const Quiz3: React.FC = () => {
             <p className="button-text">
               {!isQuestionAnswered
                 ? "RESPONDER"
-                : currentQuestionIndex === QUIZ3_DATA.questions.length - 1
+                : currentQuestionIndex === shuffledQuestions.length - 1
                 ? "FINALIZAR"
                 : "PRÓXIMA"}
             </p>

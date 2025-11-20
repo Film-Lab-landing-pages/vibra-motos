@@ -17,7 +17,10 @@ import tarjaListra from "../../assets/tarja-listra.jpg";
 
 import Roadmap from "../../components/Roadmap";
 import { NavigationProvider, useNavigation } from "../../store/navigationStore";
-import { ProgressionProvider } from "../../store/progressionStore";
+import {
+  ProgressionProvider,
+  useProgression,
+} from "../../store/progressionStore";
 import ContentAnimation from "../../components/ContentAnimation";
 
 // Componente interno que usa o navigation
@@ -57,13 +60,16 @@ const ParadaContent = () => {
 // Componente interno que usa navigation e navigate
 const ParadaNavigation = () => {
   const { activeContentId, setActiveContent } = useNavigation();
+  const { updateProgression } = useProgression();
   const navigate = useNavigate();
 
   const totalContents = 7; // Total de conteúdos da Parada1
 
   const handleNext = () => {
     if (activeContentId < totalContents) {
-      setActiveContent(activeContentId + 1);
+      const nextContentId = activeContentId + 1;
+      setActiveContent(nextContentId);
+      updateProgression(nextContentId); // Atualiza a progressão igual ao anchor point
       // Scroll para o topo ao avançar conteúdo
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {

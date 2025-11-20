@@ -11,7 +11,7 @@ export const Roadmap2 = () => {
       <AnchorsContainer
         anchors={PARADA3_ANCHORS}
         startX={114}
-        startY={218}
+        startY={250}
         spacing={110}
         yOffset={67}
       />
