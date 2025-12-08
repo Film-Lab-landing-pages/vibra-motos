@@ -11,6 +11,8 @@ import { NextButton } from "../../styles/ButtonStyles";
 import avancar from "../../assets/avancar.png";
 import { useQuizScores } from "../../store/quizScoresStore";
 import { shuffleQuestionOptions } from "../../utils/shuffleUtils";
+import acerto from "../../assets/acerto.png";
+import erro from "../../assets/erro.png";
 
 const Quiz1Base: React.FC = () => {
   // Embaralha as questões uma única vez na inicialização
@@ -36,9 +38,6 @@ const Quiz1Base: React.FC = () => {
   // Store para armazenar scores dos quizzes
   const { setQuiz1Score } = useQuizScores();
 
-  console.log("useScorm retornou:", scormHook);
-  console.log("completeLesson:", completeLesson);
-
   // Função para calcular pontuação
   const calculateScore = () => {
     let correct = 0;
@@ -59,12 +58,8 @@ const Quiz1Base: React.FC = () => {
     navigate("/parada2");
   };
 
-  // Debug log
-  console.log("Estado isCompleted:", isCompleted);
-
   // Se o quiz foi concluído, mostrar tela de resultado
   if (isCompleted) {
-    console.log("Renderizando tela de resultado");
     const scoreData = calculateScore();
     const passed = scoreData.percentage >= 70;
 
@@ -108,41 +103,19 @@ const Quiz1Base: React.FC = () => {
     }
 
     // Segunda ação: PRÓXIMA - avançar para próxima questão ou finalizar
-    console.log(
-      "handleNext chamado - currentQuestionIndex:",
-      currentQuestionIndex
-    );
-    console.log("Total de questões:", shuffledQuestions.length);
-
     if (currentQuestionIndex < shuffledQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      console.log("Finalizando quiz...");
-
       // Quiz finalizado - calcular pontuação e enviar para SCORM
       const scoreData = calculateScore();
       const passed = scoreData.percentage >= 70; // Critério de aprovação: 70%
 
-      console.log("Score calculado:", scoreData);
-      console.log("Aprovado:", passed);
-
       // Reportar para SCORM/LMS (com verificação segura)
       if (completeLesson && typeof completeLesson === "function") {
         completeLesson(scoreData.percentage, passed);
-      } else {
-        console.warn(
-          "completeLesson não está disponível - funcionando em modo desenvolvimento"
-        );
       }
 
-      console.log("Definindo isCompleted como true");
       setIsCompleted(true);
-
-      console.log(
-        `Quiz finalizado! Pontuação: ${scoreData.correct}/${scoreData.total} (${
-          scoreData.percentage
-        }%) - ${passed ? "APROVADO" : "NECESSITA MELHORIA"}`
-      );
     }
   };
 
@@ -197,6 +170,13 @@ const Quiz1Base: React.FC = () => {
                     }}
                   >
                     {option.id}) {option.text}
+                    {isQuestionAnswered && (isSelected || isCorrect) && (
+                      <img
+                        className="feedback-icon"
+                        src={isCorrect ? acerto : erro}
+                        alt={isCorrect ? "Correto" : "Incorreto"}
+                      />
+                    )}
                   </li>
                 );
               })}

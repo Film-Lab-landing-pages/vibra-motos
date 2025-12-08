@@ -243,6 +243,9 @@
   --accent-green-secondary: #a2c63c;
   --disabled-color: #838181ff;
 
+  /* Cores empresa */
+  --yellow: #feda00;
+  --blue: #0101fc;
   /* Cores acinzentadas dos componentes verdes para anchors anteriores */
   --accent-green-primary-grayed: #3c5e3e;
   --accent-green-secondary-grayed: #9fb482;

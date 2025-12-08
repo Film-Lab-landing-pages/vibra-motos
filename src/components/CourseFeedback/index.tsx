@@ -22,7 +22,8 @@ interface CourseFeedbackProps {
     total: number;
     percentage: number;
   };
-  nextButton?: React.ReactNode; // Botão opcional para navegação
+  nextButton?: React.ReactNode; // Botão para avançar (usado em high/medium performance)
+  restartButton?: React.ReactNode; // Botão para reiniciar (usado em low performance)
 }
 
 // Função para determinar o tipo automaticamente baseado no score total
@@ -44,6 +45,7 @@ const CourseFeedback: React.FC<CourseFeedbackProps> = ({
   type,
   totalScore,
   nextButton,
+  restartButton,
 }) => {
   // Determina o tipo automaticamente se não foi fornecido
   const feedbackType = type || determineType(totalScore);
@@ -101,14 +103,19 @@ const CourseFeedback: React.FC<CourseFeedbackProps> = ({
         </div>
 
         <Score
-          scoreBackground={feedbackData.scoreBackground}
-          scoreTextColor={feedbackData.scoreTextColor}
+          $scoreBackground={feedbackData.scoreBackground}
+          $scoreTextColor={feedbackData.scoreTextColor}
         >
           {totalScore.correct}/{totalScore.total} acertos
         </Score>
         <img className="semaphore" src={feedbackData.semaphore} />
       </Content>
-      {nextButton && (
+      {feedbackType === "low-performance" && restartButton && (
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+          {restartButton}
+        </div>
+      )}
+      {feedbackType !== "low-performance" && nextButton && (
         <div style={{ textAlign: "center", marginTop: "2rem" }}>
           {nextButton}
         </div>

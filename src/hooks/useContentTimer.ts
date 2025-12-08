@@ -1,15 +1,16 @@
 import { useEffect, useRef } from "react";
 import { useTimerStore } from "../store/timerStore";
 import { useContentProgress } from "./useContentProgress";
+import { DEFAULT_TIMER_DURATION } from "../constants/timer";
 
 /**
  * Hook que gerencia o timer de um content específico
  * @param contentId - ID único do content (ex: "parada1-content1")
- * @param timerDuration - Duração em segundos (padrão: 60s)
+ * @param timerDuration - Duração em segundos (padrão definido em constants/timer.ts)
  */
 export const useContentTimer = (
   contentId: string,
-  timerDuration: number = 60
+  timerDuration: number = DEFAULT_TIMER_DURATION
 ) => {
   const currentContentTimer = useTimerStore(
     (state) => state.currentContentTimer
@@ -26,8 +27,6 @@ export const useContentTimer = (
 
   // Iniciar timer quando o contentId muda
   useEffect(() => {
-    console.log(`[useContentTimer] Iniciando timer para: ${contentId}`);
-
     // Limpa intervalo anterior se existir
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -38,7 +37,6 @@ export const useContentTimer = (
 
     // Se já estava completado, não precisa contar
     if (isContentCompleted(contentId)) {
-      console.log(`[useContentTimer] Content ${contentId} já completado`);
       return;
     }
 
@@ -46,12 +44,10 @@ export const useContentTimer = (
     let seconds = 0;
     intervalRef.current = setInterval(() => {
       seconds++;
-      console.log(`[useContentTimer] ${contentId}: ${seconds}s`);
       updateTimer(seconds);
 
       // Ao completar o tempo, marca como completado
       if (seconds >= timerDuration) {
-        console.log(`[useContentTimer] Timer completado para ${contentId}`);
         completeContent(contentId);
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
@@ -61,7 +57,6 @@ export const useContentTimer = (
 
     // Cleanup ao desmontar ou quando contentId mudar
     return () => {
-      console.log(`[useContentTimer] Cleanup para ${contentId}`);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
@@ -69,17 +64,10 @@ export const useContentTimer = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentId, timerDuration]);
 
-  // Formatar tempo para exibição (MM:SS)
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  };
-
   // Tempo restante
   const timeRemaining = Math.max(0, timerDuration - currentContentTimer);
 
-  // Progresso em porcentagem
+  // Progresso percentual (0-100)
   const progressPercentage = Math.min(
     100,
     (currentContentTimer / timerDuration) * 100
@@ -88,8 +76,6 @@ export const useContentTimer = (
   return {
     currentTime: currentContentTimer,
     timeRemaining,
-    formattedTime: formatTime(currentContentTimer),
-    formattedTimeRemaining: formatTime(timeRemaining),
     canAdvance: canAdvanceCurrentContent,
     progressPercentage,
     isCompleted: isContentCompleted(contentId),

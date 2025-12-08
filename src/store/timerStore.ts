@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { DEFAULT_TIMER_DURATION } from "../constants/timer";
 
 interface TimerState {
   // Timer do content atual
@@ -32,7 +33,7 @@ export const useTimerStore = create<TimerState>()(
         if (isCompleted) {
           // Se já foi completado, libera imediatamente
           set({
-            currentContentTimer: 60,
+            currentContentTimer: DEFAULT_TIMER_DURATION,
             canAdvanceCurrentContent: true,
           });
         } else {
@@ -47,7 +48,7 @@ export const useTimerStore = create<TimerState>()(
       updateTimer: (seconds: number) => {
         set({
           currentContentTimer: seconds,
-          canAdvanceCurrentContent: seconds >= 60,
+          canAdvanceCurrentContent: seconds >= DEFAULT_TIMER_DURATION,
         });
       },
 

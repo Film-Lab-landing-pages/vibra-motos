@@ -57,7 +57,6 @@ export const usePageLoader = (options: UsePageLoaderOptions = {}) => {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("Error loading resources:", error);
         // Mesmo com erro, remove o loading após o tempo mínimo
         if (mounted) {
           setIsLoading(false);

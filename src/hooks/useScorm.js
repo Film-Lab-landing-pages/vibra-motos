@@ -20,14 +20,7 @@ export const useScorm = () => {
         setLessonStatus(scormService.getLessonStatus());
         setStudentName(scormService.getStudentName());
         setScore(scormService.getScore());
-
-        console.log("Hook inicializado:", {
-          initialized,
-          status: scormService.getLessonStatus(),
-          student: scormService.getStudentName(),
-        });
       } catch (error) {
-        console.error("Erro na inicialização:", error);
         setIsInitialized(false);
       } finally {
         setIsLoading(false);

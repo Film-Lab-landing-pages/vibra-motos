@@ -93,6 +93,15 @@ export const QuizBackground = styled.div`
         position: relative;
         padding-left: 25px;
 
+        .feedback-icon {
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          left: -2em;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
         &:hover {
           border: 1px solid var(--accent-green-primary);
         }
@@ -104,13 +113,15 @@ export const QuizBackground = styled.div`
 
         /* Estados após responder */
         &.correct {
-          border: 2px solid #22c55e !important; /* Verde */
-          background-color: #dcfce7; /* Verde claro */
+          border: 1px solid #22c55e !important; /* Verde */
+          background-color: #22c55e;
+          color: #fff !important;
         }
 
         &.incorrect {
-          background-color: #fecaca !important; /* Vermelho claro */
+          background-color: #ef4444 !important; /* Vermelho claro */
           border: 1px solid #ef4444 !important; /* Vermelho */
+          color: #fff !important;
         }
 
         /* Bullet que fica da cor accent-primary quando selecionado */

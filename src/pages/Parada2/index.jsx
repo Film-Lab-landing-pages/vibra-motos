@@ -24,6 +24,8 @@ import {
   useProgression,
 } from "../../store/progressionStore";
 import ContentAnimation from "../../components/ContentAnimation";
+import { useContentTimer } from "../../hooks/useContentTimer";
+import Timer from "../../components/Timer";
 
 // Importar imagens para pré-carregamento
 import imgParada21 from "../../assets/img-parada-2-1.png";
@@ -73,6 +75,10 @@ const ParadaNavigation = () => {
   const { activeContentId, setActiveContent } = useNavigation();
   const { updateProgression } = useProgression();
   const navigate = useNavigate();
+  const { canAdvance } = useContentTimer(
+    `parada2-content${activeContentId}`,
+    60
+  );
 
   const totalContents = 6; // Total de conteúdos da Parada2
 
@@ -82,7 +88,9 @@ const ParadaNavigation = () => {
       setActiveContent(nextContentId);
       updateProgression(nextContentId); // Atualiza a progressão igual ao anchor point
       // Scroll para o topo ao avançar conteúdo
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
     } else {
       // Se está no último conteúdo, navega para Retrovisor2
       navigate("/retrovisor2");
@@ -93,7 +101,9 @@ const ParadaNavigation = () => {
     if (activeContentId > 1) {
       setActiveContent(activeContentId - 1);
       // Scroll para o topo ao voltar conteúdo
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
     }
   };
 
@@ -113,7 +123,12 @@ const ParadaNavigation = () => {
           pointerEvents: isFirstContent ? "none" : "auto",
         }}
       />
-      <NextButton onClick={handleNext}>
+      <Timer contentId={`parada2-content${activeContentId}`} />
+      <NextButton
+        onClick={handleNext}
+        disabled={!canAdvance}
+        $canAdvance={canAdvance}
+      >
         <img src={avancar} alt={isLastContent ? "Ir para Quiz" : "Avançar"} />
       </NextButton>
     </div>

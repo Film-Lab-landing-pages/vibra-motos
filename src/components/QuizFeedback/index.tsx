@@ -89,8 +89,8 @@ const QuizFeedback: React.FC<QuizFeedbackProps> = ({
         </div>
 
         <Score
-          scoreBackground={feedbackData.scoreBackground}
-          scoreTextColor={feedbackData.scoreTextColor}
+          $scoreBackground={feedbackData.scoreBackground}
+          $scoreTextColor={feedbackData.scoreTextColor}
         >
           {score.correct}/{score.total} acertos
         </Score>

@@ -68,12 +68,12 @@ export const Content = styled.div`
 `;
 
 interface ScoreProps {
-  scoreBackground?: string;
-  scoreTextColor?: string;
+  $scoreBackground?: string;
+  $scoreTextColor?: string;
 }
 
 export const Score = styled.div<ScoreProps>`
-  color: ${(props) => props.scoreTextColor || "var(--primary-color)"};
+  color: ${(props) => props.$scoreTextColor || "var(--primary-color)"};
   position: absolute;
   top: 0;
   right: 0;
@@ -82,7 +82,7 @@ export const Score = styled.div<ScoreProps>`
   text-align: center;
   line-height: 1.2;
   border-radius: 40px;
-  background-color: ${(props) => props.scoreBackground || "#008300"};
+  background-color: ${(props) => props.$scoreBackground || "#008300"};
   font-family: Acumin Pro Condensed;
   font-weight: 700;
   font-style: Bold Italic;

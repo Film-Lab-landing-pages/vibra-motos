@@ -30,7 +30,6 @@ const scormService = {
       if (scormAPI) {
         const result = scormAPI.LMSInitialize("");
         isInitialized = result === "true";
-        console.log("✅ SCORM inicializado:", isInitialized);
 
         // Se inicializou, define status inicial
         if (isInitialized) {
@@ -41,13 +40,11 @@ const scormService = {
           }
         }
       } else {
-        console.warn("⚠️ SCORM API não encontrada - modo desenvolvimento");
         isInitialized = false;
       }
 
       return isInitialized;
     } catch (error) {
-      console.error("❌ Erro ao inicializar SCORM:", error);
       return false;
     }
   },
@@ -57,7 +54,6 @@ const scormService = {
     if (scormAPI && isInitialized) {
       const result = scormAPI.LMSFinish("");
       isInitialized = false;
-      console.log("SCORM finalizado:", result === "true");
       return result === "true";
     }
     return true;
@@ -70,12 +66,10 @@ const scormService = {
         const result = scormAPI.LMSSetValue(element, value);
         return result === "true";
       } catch (error) {
-        console.error("Erro ao definir", element, ":", error);
         return false;
       }
     }
     // Modo desenvolvimento - simula sucesso
-    console.log("🔧 DEV MODE - Set:", element, "=", value);
     return true;
   },
 
@@ -85,7 +79,6 @@ const scormService = {
       try {
         return scormAPI.LMSGetValue(element) || this.getDefaultValue(element);
       } catch (error) {
-        console.error("Erro ao obter", element, ":", error);
         return this.getDefaultValue(element);
       }
     }
@@ -100,11 +93,9 @@ const scormService = {
         const result = scormAPI.LMSCommit("");
         return result === "true";
       } catch (error) {
-        console.error("Erro no commit:", error);
         return false;
       }
     }
-    console.log("🔧 DEV MODE - Commit realizado");
     return true;
   },
 

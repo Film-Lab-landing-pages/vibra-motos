@@ -64,3 +64,28 @@ export const ContentImage = styled(BaseContent)`
   object-fit: contain;
   margin-left: -2rem;
 `;
+
+export const CompleteButton = styled.button`
+  background: none;
+  border: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem;
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  animation: pulse 2.7s infinite;
+  img {
+    width: 360px;
+    cursor: pointer;
+  }
+`;

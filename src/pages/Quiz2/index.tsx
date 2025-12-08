@@ -11,6 +11,8 @@ import { NextButton } from "../../styles/ButtonStyles";
 import avancar from "../../assets/avancar.png";
 import { useQuizScores } from "../../store/quizScoresStore";
 import { shuffleQuestionOptions } from "../../utils/shuffleUtils";
+import acerto from "../../assets/acerto.png";
+import erro from "../../assets/erro.png";
 
 const Quiz2Base: React.FC = () => {
   // Embaralha as questões uma única vez na inicialização
@@ -36,9 +38,6 @@ const Quiz2Base: React.FC = () => {
   // Store para armazenar scores dos quizzes
   const { setQuiz2Score } = useQuizScores();
 
-  console.log("useScorm retornou:", scormHook);
-  console.log("completeLesson:", completeLesson);
-
   // Função para calcular pontuação
   const calculateScore = () => {
     let correct = 0;
@@ -59,12 +58,8 @@ const Quiz2Base: React.FC = () => {
     navigate("/parada3"); // Vai para Parada3
   };
 
-  // Debug log
-  console.log("Estado isCompleted:", isCompleted);
-
   // Se o quiz foi concluído, mostrar tela de resultado
   if (isCompleted) {
-    console.log("Renderizando tela de resultado");
     const scoreData = calculateScore();
     const passed = scoreData.percentage >= 70;
 
@@ -113,17 +108,9 @@ const Quiz2Base: React.FC = () => {
 
         // Calcular e registrar pontuação no SCORM
         const scoreData = calculateScore();
-        console.log("Finalizando quiz com score:", scoreData);
 
         if (completeLesson) {
           completeLesson(scoreData.percentage, scoreData.percentage >= 70);
-          console.log(
-            `Quiz 2 concluído: ${scoreData.correct}/${scoreData.total} (${
-              scoreData.percentage
-            }%) - ${
-              scoreData.percentage >= 70 ? "APROVADO" : "NECESSITA MELHORIA"
-            }`
-          );
         }
       } else {
         // Próxima pergunta
@@ -183,6 +170,13 @@ const Quiz2Base: React.FC = () => {
                     }}
                   >
                     {option.id}) {option.text}
+                    {isQuestionAnswered && (isSelected || isCorrect) && (
+                      <img
+                        className="feedback-icon"
+                        src={isCorrect ? acerto : erro}
+                        alt={isCorrect ? "Correto" : "Incorreto"}
+                      />
+                    )}
                   </li>
                 );
               })}
@@ -210,7 +204,7 @@ const Quiz2Base: React.FC = () => {
 };
 
 const Quiz2 = withPageLoader(Quiz2Base, {
-  imageSources: [quizBackground, seta, avancar],
+  imageSources: [quizBackground, seta, avancar, acerto, erro],
   minLoadingTime: 400,
   loadingText: "Preparando quiz...",
 });

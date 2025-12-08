@@ -92,10 +92,11 @@ export const BackgroundImages = styled.div`
     animation: ${fadeIn} 1.5s ease-in-out, slideLeft 1s ease-in-out;
   }
   .marca {
-    top: 65%;
-    left: 40%;
-    transform: translateX(-50%);
-    width: 30%;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-30%);
+
+    height: 80%;
     animation: ${fadeInDelay} 2s ease-in-out;
   }
 `;
@@ -117,6 +118,7 @@ export const VideoSection = styled.section`
     border-radius: 16px;
     border: #808080 solid 2px;
     box-shadow: 4px 10px 12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
   }
 
   iframe {

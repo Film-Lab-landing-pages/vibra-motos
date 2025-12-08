@@ -5,20 +5,51 @@ import {
   Title,
   Paragraphs,
   ContentImage,
+  CompleteButton,
 } from "./styles";
 import paradaImage from "../../assets/destino-final.png";
 
 import tarjaListra from "../../assets/tarja-listra.png";
 
 import iconeFinal from "../../assets/icone-final.png";
+import concluir from "../../assets/concluir.png";
 
 import {
   TitledParagraph,
   TitledList,
   NormalParagraph,
 } from "../../components/SmartParagraphs";
+import { useScorm } from "../../hooks/useScorm";
+import { useQuizScores } from "../../store/quizScoresStore";
 
 const DestinoFinal: React.FC = ({}) => {
+  const { passCourse } = useScorm();
+  const { getTotalScore } = useQuizScores();
+
+  const handleComplete = () => {
+    // Pega o score total dos 3 quizzes
+    const totalScore = getTotalScore();
+    const scorePercentage = totalScore.percentage;
+
+    // Marca no SCORM como aprovado com o score real
+    passCourse(scorePercentage);
+
+    // Aguarda um momento para garantir que o SCORM processou
+    setTimeout(() => {
+      // Opcional: Fechar janela (funciona apenas se aberto via window.open)
+      try {
+        window.close();
+      } catch (error) {
+        // Silently fail if window cannot be closed
+      }
+
+      // Mostrar mensagem de conclusão
+      alert(
+        `Parabéns! Curso concluído com sucesso!\n\nSua pontuação: ${scorePercentage}%\n\nVocê pode fechar esta janela.`
+      );
+    }, 500);
+  };
+
   return (
     <ContentWrapper className="content">
       <div className="image-header">
@@ -66,6 +97,9 @@ const DestinoFinal: React.FC = ({}) => {
             width={"40%"}
           />
         </div>
+        <CompleteButton onClick={handleComplete}>
+          <img src={concluir} alt="Concluir Curso" />
+        </CompleteButton>
       </div>
     </ContentWrapper>
   );

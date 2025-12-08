@@ -51,10 +51,6 @@ const Anchor: React.FC<AnchorProps> = ({
   const isVisited = isPrevious || isActive; // Visited = previous + active
   const isOpenState = isActive || isHovering;
 
-  console.log(
-    `Anchor ${contentId}: state=${anchorState}, isActive=${isActive}, isPrevious=${isPrevious}, isBlocked=${isBlocked}, isClickable=${isClickable}`
-  );
-
   // Handlers para hover (só funciona se não estiver bloqueado)
   const handleMouseEnter = () => {
     if (!isBlocked) {
@@ -69,9 +65,6 @@ const Anchor: React.FC<AnchorProps> = ({
   // Handler para clique no point (só funciona se for clicável)
   const handlePointClick = () => {
     if (isClickable) {
-      console.log(
-        `Ativando content ${contentId}, ativo atual: ${activeContentId}`
-      );
       setActiveContent(contentId);
       updateProgression(contentId); // Atualiza a progressão quando clica
       // Scroll para o topo ao navegar

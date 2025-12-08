@@ -12,10 +12,7 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [activeContentId, setActiveContentId] = useState<number | null>(1); // Começa com o primeiro ativo
 
-  console.log("NavigationProvider - activeContentId:", activeContentId);
-
   const setActiveContent = (id: number) => {
-    console.log(`Mudando activeContentId de ${activeContentId} para ${id}`);
     setActiveContentId(id);
   };
 

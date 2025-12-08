@@ -32,7 +32,6 @@ export const ProgressionProvider = ({ children }) => {
   const updateProgression = (anchorId) => {
     if (anchorId > maxReached) {
       setMaxReached(anchorId);
-      console.log(`Progressão atualizada: maxReached = ${anchorId}`);
     }
   };
 

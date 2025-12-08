@@ -10,8 +10,11 @@ import QuizFeedback from "../../components/QuizFeedback";
 import CourseFeedback from "../../components/CourseFeedback";
 import { NextButton } from "../../styles/ButtonStyles";
 import avancar from "../../assets/avancar.png";
+import reiniciar from "../../assets/reiniciar.png";
 import { useQuizScores } from "../../store/quizScoresStore";
 import { shuffleQuestionOptions } from "../../utils/shuffleUtils";
+import acerto from "../../assets/acerto.png";
+import erro from "../../assets/erro.png";
 
 const Quiz3Base: React.FC = () => {
   // Embaralha as questões uma única vez na inicialização
@@ -33,13 +36,10 @@ const Quiz3Base: React.FC = () => {
 
   // Hook SCORM para comunicação com LMS
   const scormHook = useScorm();
-  const { completeLesson } = scormHook;
+  const { completeLesson, setSuspendData } = scormHook;
 
   // Store para armazenar scores dos quizzes
   const { setQuiz3Score, getTotalScore } = useQuizScores();
-
-  console.log("useScorm retornou:", scormHook);
-  console.log("completeLesson:", completeLesson);
 
   // Função para calcular pontuação
   const calculateScore = () => {
@@ -68,15 +68,34 @@ const Quiz3Base: React.FC = () => {
     const passed = totalScore.correct >= 8; // Desempenho alto = passou
 
     // Marcar curso como completo no SCORM
-    if (completeLesson) {
+    if (completeLesson && typeof completeLesson === "function") {
       completeLesson(totalScore.percentage, passed);
     }
+
     // Navegar para página final ou início
     navigate("/destinofinal");
   };
 
-  // Debug log
-  console.log("Estado isCompleted:", isCompleted);
+  // Função para reiniciar o curso
+  const handleRestart = () => {
+    // Limpar localStorage (timer e progression)
+    localStorage.removeItem("timer-storage");
+    localStorage.removeItem("progression-storage");
+
+    // Limpar quiz scores
+    localStorage.removeItem("quiz-scores-storage");
+
+    // Limpar suspend_data no SCORM
+    if (setSuspendData && typeof setSuspendData === "function") {
+      setSuspendData("");
+    }
+
+    // Navegar para o início
+    navigate("/");
+
+    // Forçar reload da página para garantir que tudo seja resetado
+    window.location.reload();
+  };
 
   // Se deve mostrar o feedback do curso
   if (showCourseFeedback) {
@@ -91,6 +110,11 @@ const Quiz3Base: React.FC = () => {
               <img src={avancar} alt="Finalizar Curso" />
             </NextButton>
           }
+          restartButton={
+            <NextButton onClick={handleRestart}>
+              <img src={reiniciar} alt="Reiniciar Curso" />
+            </NextButton>
+          }
         />
       </div>
     );
@@ -98,7 +122,6 @@ const Quiz3Base: React.FC = () => {
 
   // Se o quiz foi concluído, mostrar tela de resultado do Quiz3
   if (isCompleted) {
-    console.log("Renderizando tela de resultado do Quiz3");
     const scoreData = calculateScore();
 
     return (
@@ -146,17 +169,9 @@ const Quiz3Base: React.FC = () => {
 
         // Calcular e registrar pontuação no SCORM
         const scoreData = calculateScore();
-        console.log("Finalizando quiz com score:", scoreData);
 
-        if (completeLesson) {
+        if (completeLesson && typeof completeLesson === "function") {
           completeLesson(scoreData.percentage, scoreData.percentage >= 70);
-          console.log(
-            `Quiz 2 concluído: ${scoreData.correct}/${scoreData.total} (${
-              scoreData.percentage
-            }%) - ${
-              scoreData.percentage >= 70 ? "APROVADO" : "NECESSITA MELHORIA"
-            }`
-          );
         }
       } else {
         // Próxima pergunta
@@ -216,6 +231,13 @@ const Quiz3Base: React.FC = () => {
                     }}
                   >
                     {option.id}) {option.text}
+                    {isQuestionAnswered && (isSelected || isCorrect) && (
+                      <img
+                        className="feedback-icon"
+                        src={isCorrect ? acerto : erro}
+                        alt={isCorrect ? "Correto" : "Incorreto"}
+                      />
+                    )}
                   </li>
                 );
               })}
@@ -243,7 +265,7 @@ const Quiz3Base: React.FC = () => {
 };
 
 const Quiz3 = withPageLoader(Quiz3Base, {
-  imageSources: [quizBackground, seta, avancar],
+  imageSources: [quizBackground, seta, avancar, reiniciar, acerto, erro],
   minLoadingTime: 400,
   loadingText: "Preparando quiz...",
 });

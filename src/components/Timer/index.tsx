@@ -1,14 +1,18 @@
 import React from "react";
 import { useContentTimer } from "../../hooks/useContentTimer";
+import { DEFAULT_TIMER_DURATION } from "../../constants/timer";
 import * as S from "./styles";
 
 interface TimerProps {
   contentId: string;
-  duration?: number; // Duração em segundos (padrão: 60)
+  duration?: number; // Duração em segundos (padrão definido em constants/timer.ts)
 }
 
-const Timer: React.FC<TimerProps> = ({ contentId, duration = 60 }) => {
-  const { formattedTimeRemaining, isCompleted } = useContentTimer(
+const Timer: React.FC<TimerProps> = ({
+  contentId,
+  duration = DEFAULT_TIMER_DURATION,
+}) => {
+  const { isCompleted, progressPercentage } = useContentTimer(
     contentId,
     duration
   );
@@ -18,12 +22,23 @@ const Timer: React.FC<TimerProps> = ({ contentId, duration = 60 }) => {
       <p>
         {isCompleted
           ? "Conteúdo concluído! Você pode avançar."
-          : "Você tem 1 minuto para concluir este conteúdo."}
+          : `Você tem ${duration} segundos para concluir este conteúdo.`}
         <br />
         {!isCompleted && "Clique em avançar ao final da contagem."}
       </p>
       <S.TimerDisplay $isCompleted={isCompleted}>
-        {formattedTimeRemaining}
+        <S.CircularProgress>
+          <S.CircularProgressSvg viewBox="0 0 44 44">
+            <S.CircularProgressCircleBackground cx="22" cy="22" r="18" />
+            <S.CircularProgressCircle
+              cx="22"
+              cy="22"
+              r="18"
+              $progress={progressPercentage}
+              $isCompleted={isCompleted}
+            />
+          </S.CircularProgressSvg>
+        </S.CircularProgress>
       </S.TimerDisplay>
     </S.TimerContainer>
   );

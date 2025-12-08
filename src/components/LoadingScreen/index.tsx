@@ -47,7 +47,7 @@ const LoadingScreen: React.FC = ({}) => {
   return (
     <LoadingContainer>
       <Spinner />
-      <LoadingText> CARREGANDO...,</LoadingText>
+      <LoadingText> CARREGANDO...</LoadingText>
     </LoadingContainer>
   );
 };
