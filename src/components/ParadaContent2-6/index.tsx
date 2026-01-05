@@ -5,8 +5,10 @@ import {
   Title,
   Paragraphs,
   ContentImage,
+  ContentVideo,
 } from "./styles";
 import mapaMoto from "../../assets/img-parada-2-6.png";
+import image from "../../assets/video-parada-2-6.webm";
 import {
   TitledParagraph,
   TitledList,
@@ -63,11 +65,14 @@ const ParadaContent2_6: React.FC<ParadaContent2_6Props> = ({
           </Paragraphs>
         </Text>
 
-        <ContentImage
+        <ContentVideo
           className="content-image"
-          src={imageSrc}
-          alt={imageAlt}
+          src={image}
           width={"45%"}
+          autoPlay
+          loop
+          muted
+          playsInline
         />
       </div>
     </ContentWrapper>

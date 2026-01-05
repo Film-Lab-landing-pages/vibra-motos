@@ -16,6 +16,7 @@ import Quiz2 from "./pages/Quiz2";
 import Quiz3 from "./pages/Quiz3";
 
 import DestinoFinal from "./pages/DestinoFinal";
+import TEST from "./pages/TEST";
 
 // App principal com Provider
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/retrovisor3" element={<Retrovisor3 />} />
         <Route path="/quiz3" element={<Quiz3 />} />
         <Route path="/destinofinal" element={<DestinoFinal />} />
+        <Route path="/test" element={<TEST />} />
       </Routes>
     </Router>
   );

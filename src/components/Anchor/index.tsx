@@ -15,6 +15,7 @@ interface AnchorProps {
   contentId: number; // ID do content que este anchor controla
   number: number; // Número do anchor (1, 2, 3, etc)
   title: string; // Título do anchor
+  onAnchorClick?: (contentId: number) => void;
 }
 
 const Anchor: React.FC<AnchorProps> = ({
@@ -29,6 +30,7 @@ const Anchor: React.FC<AnchorProps> = ({
   contentId,
   number,
   title,
+  onAnchorClick,
 }) => {
   const x = startX + position * spacing;
   const y = variant === "primary" ? startY : startY + yOffset;
@@ -67,8 +69,11 @@ const Anchor: React.FC<AnchorProps> = ({
     if (isClickable) {
       setActiveContent(contentId);
       updateProgression(contentId); // Atualiza a progressão quando clica
-      // Scroll para o topo ao navegar
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Se há callback, chama (para abrir modal)
+      if (onAnchorClick) {
+        onAnchorClick(contentId);
+      }
     }
   };
   return (

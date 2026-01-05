@@ -29,3 +29,10 @@ export const ContentImage = styled(BaseContent)`
   padding: 0;
   object-fit: contain;
 `;
+
+export const ContentVideo = styled.video`
+  padding: 0;
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+`;

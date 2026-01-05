@@ -4,7 +4,7 @@ import { Container } from "./styles";
 import AnchorsContainer from "../AnchorsContainer";
 import { PARADA2_ANCHORS } from "../../data/anchorsData";
 
-export const Roadmap2 = () => {
+export const Roadmap2 = ({ onAnchorClick }) => {
   return (
     <Container>
       <img className="path" src={roadmap} alt="estrada" />
@@ -14,6 +14,7 @@ export const Roadmap2 = () => {
         startY={220}
         spacing={157}
         yOffset={95}
+        onAnchorClick={onAnchorClick}
       />
     </Container>
   );

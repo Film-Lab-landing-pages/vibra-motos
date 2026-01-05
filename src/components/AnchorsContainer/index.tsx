@@ -9,6 +9,7 @@ interface AnchorsContainerProps {
   startY?: number;
   spacing?: number;
   yOffset?: number;
+  onAnchorClick?: (contentId: number) => void;
 }
 
 const AnchorsContainer: React.FC<AnchorsContainerProps> = ({
@@ -17,6 +18,7 @@ const AnchorsContainer: React.FC<AnchorsContainerProps> = ({
   startY = 193.5,
   spacing = 133,
   yOffset = 80,
+  onAnchorClick,
 }) => {
   return (
     <AnchorsWrapper>
@@ -34,6 +36,7 @@ const AnchorsContainer: React.FC<AnchorsContainerProps> = ({
           contentId={index + 1} // ID do content (1, 2, 3, 4, etc.)
           number={anchor.number}
           title={anchor.title}
+          onAnchorClick={onAnchorClick}
         />
       ))}
     </AnchorsWrapper>

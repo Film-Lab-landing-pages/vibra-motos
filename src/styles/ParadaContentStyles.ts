@@ -116,7 +116,7 @@ export const BaseTitle = styled.div<BaseTitleProps>`
   .number {
     font-size: 10rem;
     line-height: 1;
-    color: var(--secondary-background);
+    color: var(--background-color);
     margin: 0;
   }
 
@@ -285,14 +285,14 @@ export const ParadaContainer = styled.div`
   flex-direction: column;
 
   .content {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
     display: flex;
   }
 
   .navigation {
     margin-top: 2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 
     .next-button,

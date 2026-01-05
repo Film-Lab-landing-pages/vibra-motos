@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ParadaContainer } from "../../styles/ParadaContentStyles";
 import { NextButton } from "../../styles/ButtonStyles";
@@ -12,11 +12,11 @@ import ParadaContent1_6 from "../../components/ParadaContent1-6";
 import ParadaContent1_7 from "../../components/ParadaContent1-7";
 import placa from "../../assets/placa.png";
 import avancar from "../../assets/avancar.png";
-import back from "../../assets/back.png";
 import tarjaListra from "../../assets/tarja-listra.jpg";
 
 import Roadmap from "../../components/Roadmap";
 import ModularIntro from "../../components/ModularIntro";
+import ContentModal from "../../components/ContentModal";
 import { PARADA1_INTRO_DATA } from "../../data/parada1IntroData";
 import { withPageLoader } from "../../hoc/withPageLoader";
 import { NavigationProvider, useNavigation } from "../../store/navigationStore";
@@ -24,7 +24,6 @@ import {
   ProgressionProvider,
   useProgression,
 } from "../../store/progressionStore";
-import ContentAnimation from "../../components/ContentAnimation";
 import { useContentTimer } from "../../hooks/useContentTimer";
 
 // Importar todas as imagens para pré-carregamento
@@ -38,110 +37,84 @@ import imgParada171 from "../../assets/img-parada-1-7-1.png";
 import imgParada172 from "../../assets/img-parada-1-7-2.png";
 import imgParada173 from "../../assets/img-parada-1-7-3.png";
 import imgParada174 from "../../assets/img-parada-1-7-4.png";
-import Timer from "../../components/Timer";
 
-// Componente interno que usa o navigation
-const ParadaContent = () => {
-  const { activeContentId } = useNavigation();
+const TOTAL_CONTENTS = 7;
 
-  // Função para renderizar apenas o content ativo com animação
-  const renderActiveContent = () => {
-    const content = (() => {
-      switch (activeContentId) {
-        case 1:
-          return <ParadaContent1_1 />;
-        case 2:
-          return <ParadaContent1_2 />;
-        case 3:
-          return <ParadaContent1_3 />;
-        case 4:
-          return <ParadaContent1_4 />;
-        case 5:
-          return <ParadaContent1_5 />;
-        case 6:
-          return <ParadaContent1_6 />;
-        case 7:
-          return <ParadaContent1_7 />;
-        default:
-          return <ParadaContent1_1 />; // Fallback para o primeiro
-      }
-    })();
-
-    // Envolve o content com animação, usando activeContentId como key para forçar re-animação
-    return <ContentAnimation key={activeContentId}>{content}</ContentAnimation>;
-  };
-
-  return renderActiveContent();
-};
-
-// Componente interno que usa navigation e navigate
-const ParadaNavigation = () => {
+// Componente que gerencia a modal e conteúdo
+const Parada1Content = () => {
   const { activeContentId, setActiveContent } = useNavigation();
   const { updateProgression } = useProgression();
   const navigate = useNavigate();
+
+  const [showIntro, setShowIntro] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [visitedContents, setVisitedContents] = useState(new Set());
+
   const { canAdvance } = useContentTimer(
     `parada1-content${activeContentId}`,
     60
   );
 
-  const totalContents = 7; // Total de conteúdos da Parada1
+  // Função para renderizar o conteúdo na modal
+  const renderModalContent = () => {
+    switch (activeContentId) {
+      case 1:
+        return <ParadaContent1_1 />;
+      case 2:
+        return <ParadaContent1_2 />;
+      case 3:
+        return <ParadaContent1_3 />;
+      case 4:
+        return <ParadaContent1_4 />;
+      case 5:
+        return <ParadaContent1_5 />;
+      case 6:
+        return <ParadaContent1_6 />;
+      case 7:
+        return <ParadaContent1_7 />;
+      default:
+        return <ParadaContent1_1 />;
+    }
+  };
 
-  const handleNext = () => {
-    if (activeContentId < totalContents) {
+  // Handler para avançar do ModularIntro para Roadmap
+  const handleIntroAdvance = () => {
+    setShowIntro(false);
+  };
+
+  // Handler quando clica em um anchor do roadmap
+  const handleAnchorClick = (contentId) => {
+    setActiveContent(contentId);
+    setIsModalOpen(true);
+  };
+
+  // Handler para fechar modal e avançar
+  const handleModalClose = () => {
+    // Marca conteúdo como visitado
+    setVisitedContents((prev) => new Set([...prev, activeContentId]));
+
+    // Fecha a modal
+    setIsModalOpen(false);
+
+    // Se não é o último, apenas abre o próximo anchor (mas não a modal)
+    if (activeContentId < TOTAL_CONTENTS) {
       const nextContentId = activeContentId + 1;
       setActiveContent(nextContentId);
-      updateProgression(nextContentId); // Atualiza a progressão igual ao anchor point
-      // Scroll para o topo ao avançar conteúdo
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 100);
+      updateProgression(nextContentId);
     } else {
-      // Se está no último conteúdo, navega para Retrovisor1
+      // Último conteúdo visitado
+      updateProgression(activeContentId);
+    }
+  };
+
+  // Handler para avançar para próxima página (só funciona se todos visitados)
+  const handleFinalAdvance = () => {
+    if (visitedContents.size === TOTAL_CONTENTS) {
       navigate("/retrovisor1");
     }
   };
 
-  const handleBack = () => {
-    if (activeContentId > 1) {
-      setActiveContent(activeContentId - 1);
-      // Scroll para o topo ao voltar conteúdo
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 100);
-    }
-  };
-
-  const isFirstContent = activeContentId === 1;
-  const isLastContent = activeContentId === totalContents;
-
-  return (
-    <div className="navigation">
-      <img
-        className="back-button"
-        src={back}
-        alt="Voltar"
-        onClick={handleBack}
-        style={{
-          opacity: isFirstContent ? 0 : 1,
-          cursor: isFirstContent ? "not-allowed" : "pointer",
-          pointerEvents: isFirstContent ? "none" : "auto",
-        }}
-      />
-      <Timer contentId={`parada1-content${activeContentId}`} />
-      <NextButton
-        onClick={handleNext}
-        disabled={!canAdvance}
-        $canAdvance={canAdvance}
-      >
-        <img src={avancar} alt={isLastContent ? "Ir para Quiz" : "Avançar"} />
-      </NextButton>
-    </div>
-  );
-};
-
-// Componente que usa o hook dentro do provider
-const Parada1Content = () => {
-  const { activeContentId } = useNavigation();
+  const allContentsVisited = visitedContents.size === TOTAL_CONTENTS;
 
   return (
     <ParadaContainer className="container">
@@ -150,13 +123,43 @@ const Parada1Content = () => {
         iconSrc={placa}
         iconAlt="placa parar"
       />
-      {/* ModularIntro só aparece no primeiro bloco */}
-      {activeContentId === 1 && <ModularIntro sections={PARADA1_INTRO_DATA} />}
-      <Roadmap />
-      {/* Renderiza apenas o content ativo */}
-      <ParadaContent />
-      {/* Navegação com funcionalidade */}
-      <ParadaNavigation />
+
+      {showIntro ? (
+        <>
+          <ModularIntro sections={PARADA1_INTRO_DATA} />
+          <div className="navigation">
+            <NextButton onClick={handleIntroAdvance} $canAdvance={true}>
+              <img src={avancar} alt="Avançar" />
+            </NextButton>
+          </div>
+        </>
+      ) : (
+        <>
+          <Roadmap onAnchorClick={handleAnchorClick} />
+
+          <div className="navigation">
+            <NextButton
+              onClick={handleFinalAdvance}
+              disabled={!allContentsVisited}
+              $canAdvance={allContentsVisited}
+            >
+              <img src={avancar} alt="Ir para Retrovisor" />
+            </NextButton>
+          </div>
+        </>
+      )}
+
+      {/* Modal com conteúdo */}
+      <ContentModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        contentId={`parada1-content${activeContentId}`}
+        timerDuration={60}
+        canAdvance={canAdvance}
+      >
+        {renderModalContent()}
+      </ContentModal>
+
       {/* Tarja listra no final */}
       <div className="tarja-listra">
         <img src={tarjaListra} alt="" />
@@ -180,7 +183,6 @@ const Parada1 = withPageLoader(Parada1Base, {
   imageSources: [
     placa,
     avancar,
-    back,
     tarjaListra,
     mapaMoto,
     imgParada12,
