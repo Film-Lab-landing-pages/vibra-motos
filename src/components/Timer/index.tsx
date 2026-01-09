@@ -1,5 +1,5 @@
 import React from "react";
-import { useContentTimer } from "../../hooks/useContentTimer";
+import { useTimerStore } from "../../store/timerStore";
 import { DEFAULT_TIMER_DURATION } from "../../constants/timer";
 import * as S from "./styles";
 
@@ -12,10 +12,16 @@ const Timer: React.FC<TimerProps> = ({
   contentId,
   duration = DEFAULT_TIMER_DURATION,
 }) => {
-  const { isCompleted, progressPercentage } = useContentTimer(
-    contentId,
-    duration
+  const currentContentTimer = useTimerStore(
+    (state) => state.currentContentTimer
   );
+  const isContentCompleted = useTimerStore((state) => state.isContentCompleted);
+
+  const progressPercentage = Math.min(
+    100,
+    (currentContentTimer / duration) * 100
+  );
+  const isCompleted = isContentCompleted(contentId);
 
   return (
     <S.TimerContainer>

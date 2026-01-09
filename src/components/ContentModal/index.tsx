@@ -4,13 +4,13 @@ import Timer from "../Timer";
 import { NextButton } from "../../styles/ButtonStyles";
 import avancar from "../../assets/avancar.png";
 import { DEFAULT_TIMER_DURATION } from "../../constants/timer";
+import { useContentTimer } from "../../hooks/useContentTimer";
 
 interface ContentModalProps {
   isOpen: boolean;
   onClose: () => void;
   contentId: string;
   timerDuration?: number;
-  canAdvance: boolean;
   children: React.ReactNode;
 }
 
@@ -19,9 +19,9 @@ const ContentModal: React.FC<ContentModalProps> = ({
   onClose,
   contentId,
   timerDuration = DEFAULT_TIMER_DURATION,
-  canAdvance,
   children,
 }) => {
+  const { canAdvance } = useContentTimer(contentId, timerDuration);
   // Previne scroll do body quando modal está aberta
   useEffect(() => {
     if (isOpen) {

@@ -50,8 +50,6 @@ const Parada1Content = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visitedContents, setVisitedContents] = useState(new Set());
 
-  const { canAdvance } = useContentTimer(`parada1-content${activeContentId}`);
-
   // Função para renderizar o conteúdo na modal
   const renderModalContent = () => {
     switch (activeContentId) {
@@ -151,7 +149,6 @@ const Parada1Content = () => {
         isOpen={isModalOpen}
         onClose={handleModalClose}
         contentId={`parada1-content${activeContentId}`}
-        canAdvance={canAdvance}
       >
         {renderModalContent()}
       </ContentModal>

@@ -46,8 +46,6 @@ const Parada3Content = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visitedContents, setVisitedContents] = useState(new Set());
 
-  const { canAdvance } = useContentTimer(`parada3-content${activeContentId}`);
-
   const handleIntroAdvance = () => {
     setShowIntro(false);
   };
@@ -144,7 +142,6 @@ const Parada3Content = () => {
         isOpen={isModalOpen}
         onClose={handleModalClose}
         contentId={`parada3-content${activeContentId}`}
-        canAdvance={canAdvance}
       >
         {renderModalContent()}
       </ContentModal>

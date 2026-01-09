@@ -4,6 +4,7 @@ import { usePageLoader } from "../hooks/usePageLoader";
 
 interface WithPageLoaderOptions {
   imageSources?: string[];
+  videoSources?: string[];
   minLoadingTime?: number;
   loadingText?: string;
 }
@@ -17,8 +18,8 @@ export const withPageLoader = <P extends object>(
   options: WithPageLoaderOptions = {}
 ) => {
   const ComponentWithLoader: React.FC<P> = (props) => {
-    const { imageSources = [], minLoadingTime = 500, loadingText } = options;
-    const { isLoading } = usePageLoader({ imageSources, minLoadingTime });
+    const { imageSources = [], videoSources = [], minLoadingTime = 500, loadingText } = options;
+    const { isLoading } = usePageLoader({ imageSources, videoSources, minLoadingTime });
 
     if (isLoading) {
       return <LoadingScreen />;

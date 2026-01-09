@@ -83,6 +83,7 @@ const Modulo1 = withPageLoader(Modulo1Base, {
     semaforo,
     avancar,
   ],
+  videoSources: [videoTest, teaserVideo],
   minLoadingTime: 500,
   loadingText: "Carregando módulo...",
 });

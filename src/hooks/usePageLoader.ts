@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 interface UsePageLoaderOptions {
   imageSources?: string[];
+  videoSources?: string[];
   minLoadingTime?: number; // Tempo mínimo em ms para evitar flash
 }
 
@@ -10,7 +11,8 @@ interface UsePageLoaderOptions {
  * antes de exibir o conteúdo, evitando problemas de animação e transição.
  */
 export const usePageLoader = (options: UsePageLoaderOptions = {}) => {
-  const { imageSources = [], minLoadingTime = 500 } = options;
+  const { imageSources = [], videoSources = [], minLoadingTime = 500 } =
+    options;
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,21 +28,45 @@ export const usePageLoader = (options: UsePageLoaderOptions = {}) => {
           });
         }
 
+        const loadPromises: Promise<void>[] = [];
+
         // Pré-carrega todas as imagens especificadas
         if (imageSources.length > 0) {
-          await Promise.all(
-            imageSources.map(
-              (src) =>
-                new Promise<void>((resolve, reject) => {
-                  const img = new Image();
-                  img.onload = () => resolve();
-                  img.onerror = () =>
-                    reject(new Error(`Failed to load image: ${src}`));
-                  img.src = src;
-                })
-            )
-          );
+          imageSources.forEach((src) => {
+            loadPromises.push(
+              new Promise<void>((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve();
+                img.onerror = () => {
+                  console.warn(`Failed to preload image: ${src}`);
+                  resolve(); // Resolve mesmo com erro para não travar
+                };
+                img.src = src;
+              })
+            );
+          });
         }
+
+        // Pré-carrega vídeos (apenas metadata para ser rápido)
+        if (videoSources.length > 0) {
+          videoSources.forEach((src) => {
+            loadPromises.push(
+              new Promise<void>((resolve) => {
+                const video = document.createElement("video");
+                video.preload = "metadata";
+                video.onloadedmetadata = () => resolve();
+                video.onerror = () => {
+                  console.warn(`Failed to preload video: ${src}`);
+                  resolve();
+                };
+                video.src = src;
+              })
+            );
+          });
+        }
+
+        // Aguarda todas as imagens e vídeos
+        await Promise.all(loadPromises);
 
         // Garante tempo mínimo de loading para evitar flash
         const elapsedTime = Date.now() - startTime;
@@ -57,6 +83,7 @@ export const usePageLoader = (options: UsePageLoaderOptions = {}) => {
           setIsLoading(false);
         }
       } catch (error) {
+        console.error("Error during preload:", error);
         // Mesmo com erro, remove o loading após o tempo mínimo
         if (mounted) {
           setIsLoading(false);
@@ -69,7 +96,8 @@ export const usePageLoader = (options: UsePageLoaderOptions = {}) => {
     return () => {
       mounted = false;
     };
-  }, [imageSources, minLoadingTime]);
+  }, [imageSources, videoSources, minLoadingTime]);
 
   return { isLoading };
 };
+
