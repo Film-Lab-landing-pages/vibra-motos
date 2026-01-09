@@ -1,7 +1,7 @@
 import React from "react";
 import { ContentWrapper, Text, Title, VideoSection } from "./styles";
 import ContentImage from "../ContentImage";
-import paradaImage from "../../assets/img-parada-1-4.png";
+import paradaVideo from "../../assets/video-cego.mp4";
 
 interface ParadaContent3_1Props {
   number?: string;
@@ -26,13 +26,12 @@ const ParadaContent3_1: React.FC<ParadaContent3_1Props> = ({
       </Title>
       <VideoSection>
         <div className="video-container">
-          <iframe
-            src="https://www.youtube.com/embed/NpEaa2P7qZI"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <video
+            src={paradaVideo}
+            title="Ponto cego: o inimigo invisível"
+            controls
+            width="100%"
+          ></video>
         </div>
       </VideoSection>
     </ContentWrapper>

@@ -118,8 +118,10 @@ const ParadaContent2_3: React.FC<ParadaContent2_3Props> = ({
 
             <div className="content-text">
               <Paragraphs>
-                <p className="subtitle">
-                  <b>Itens críticos a verificar regularmente:</b>
+                <p className="subtitle" style={{ margin: "0" }}>
+                  <b style={{ margin: "0" }}>
+                    Itens críticos a verificar regularmente:
+                  </b>
                 </p>
                 {firstThreeItems.map((paragraph, index) => {
                   const titleMatch = paragraph.match(/^([^:]+:)\s*(.*)$/);
@@ -168,7 +170,7 @@ const ParadaContent2_3: React.FC<ParadaContent2_3Props> = ({
               <ContentImage
                 src={paradaImage3}
                 alt={imageAlt}
-                width={"100%"}
+                width={"90%"}
                 objectFit="contain"
               />
             </div>

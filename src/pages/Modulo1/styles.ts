@@ -76,6 +76,11 @@ export const BackgroundImages = styled.div`
     position: absolute;
   }
 
+  .video-test {
+    position: absolute;
+    z-index: 5;
+  }
+
   .intro-image {
     top: 0;
     right: 0;
@@ -113,7 +118,7 @@ export const VideoSection = styled.section`
 
   .video-container {
     width: 100%;
-    padding: 1rem;
+    padding: 2rem;
     background: linear-gradient(to right, #7d7676ff, #3f3b3bff, #686767ff);
     border-radius: 16px;
     border: #808080 solid 2px;
@@ -121,10 +126,12 @@ export const VideoSection = styled.section`
     margin-bottom: 2rem;
   }
 
-  iframe {
+  video {
     width: 100%;
-    aspect-ratio: 16/9;
+    height: 100%;
     border: none;
     border-radius: 12px;
+    display: block;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.7);
   }
 `;

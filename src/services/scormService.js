@@ -1,6 +1,8 @@
 // SCORM Service Simplificado - Versão que funciona
 let scormAPI = null;
 let isInitialized = false;
+let sessionStartTime = null;
+let sessionInterval = null;
 
 // Tenta encontrar a API SCORM
 function findScormAPI() {
@@ -21,6 +23,19 @@ function findScormAPI() {
   return api;
 }
 
+// Converte milissegundos para formato SCORM (HH:MM:SS)
+function msToScormTime(milliseconds) {
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+    2,
+    "0"
+  )}:${String(seconds).padStart(2, "0")}`;
+}
+
 const scormService = {
   // Inicialização
   async initialize() {
@@ -38,6 +53,9 @@ const scormService = {
             this.set("cmi.core.lesson_status", "incomplete");
             this.commit();
           }
+
+          // Inicia rastreamento de tempo
+          this.startSessionTimer();
         }
       } else {
         isInitialized = false;
@@ -52,11 +70,46 @@ const scormService = {
   // Finalização
   terminate() {
     if (scormAPI && isInitialized) {
+      // Para o timer e salva tempo final
+      this.stopSessionTimer();
+
       const result = scormAPI.LMSFinish("");
       isInitialized = false;
       return result === "true";
     }
     return true;
+  },
+
+  // Inicia o timer da sessão
+  startSessionTimer() {
+    if (sessionInterval) return; // Já está rodando
+
+    sessionStartTime = Date.now();
+
+    // Atualiza o tempo a cada 30 segundos
+    sessionInterval = setInterval(() => {
+      this.updateSessionTime();
+    }, 30000);
+  },
+
+  // Para o timer e salva tempo final
+  stopSessionTimer() {
+    if (sessionInterval) {
+      clearInterval(sessionInterval);
+      sessionInterval = null;
+    }
+    this.updateSessionTime(); // Salva tempo final
+  },
+
+  // Atualiza o tempo de sessão no SCORM
+  updateSessionTime() {
+    if (!sessionStartTime) return;
+
+    const elapsed = Date.now() - sessionStartTime;
+    const scormTime = msToScormTime(elapsed);
+
+    this.set("cmi.core.session_time", scormTime);
+    this.commit();
   },
 
   // Definir valor

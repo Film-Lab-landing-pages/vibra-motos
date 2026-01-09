@@ -57,6 +57,16 @@ export const Card = styled(FramedTextTarja2)`
     align-items: center;
     .carousel-img {
       flex: 2;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      video {
+        width: 130%;
+        position: absolute;
+        top: 0;
+        left: -4rem;
+        transform: translate(0, -60%);
+      }
     }
     .content-text {
       flex: 5;

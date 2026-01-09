@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ContentWrapper, Card, Title, Paragraphs } from "./styles";
 import ContentImage from "../ContentImage";
 import paradaImage from "../../assets/img-parada-1-5.png";
+import paradaVideo from "../../assets/img-parada-1-5.webm";
 import seta from "../../assets/seta.png";
 import back from "../../assets/seta-retornar.png";
 import placaParar from "../../assets/placa-parar.png";
@@ -48,12 +49,15 @@ const ParadaContent1_5: React.FC<ParadaContent1_5Props> = ({
         <Card key={currentSlide}>
           <div className="carousel-flex slide-0">
             <div className="carousel-img">
-              <ContentImage
+              {
+                /*  <ContentImage
                 src={imageSrc}
                 alt={imageAlt}
                 width={"100%"}
                 objectFit="contain"
-              />
+              /> */
+                <video src={paradaVideo} autoPlay loop muted></video>
+              }
             </div>
 
             <div className="content-text">

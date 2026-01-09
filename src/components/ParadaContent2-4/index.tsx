@@ -1,7 +1,7 @@
 import React from "react";
 import { ContentWrapper, Text, Title, VideoSection } from "./styles";
 import ContentImage from "../ContentImage";
-import paradaImage from "../../assets/img-parada-1-4.png";
+import paradaVideo from "../../assets/video-armadura.mp4";
 
 interface ParadaContent2_4Props {
   number?: string;
@@ -26,13 +26,12 @@ const ParadaContent2_4: React.FC<ParadaContent2_4Props> = ({
       </Title>
       <VideoSection>
         <div className="video-container">
-          <iframe
-            src="https://www.youtube.com/embed/NpEaa2P7qZI"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <video
+            src={paradaVideo}
+            title="Equipamentos: a armadura do piloto"
+            controls
+            width="100%"
+          ></video>
         </div>
       </VideoSection>
     </ContentWrapper>

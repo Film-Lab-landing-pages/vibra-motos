@@ -19,8 +19,8 @@ const Retrovisor1Base = () => {
   return (
     <Retrovisor
       paragraphs={paragraphs}
-      nextRoute="/parada2"
-      nextButtonAlt="Ir para Parada 2"
+      nextRoute="/atividade1"
+      nextButtonAlt="Ir para Atividade 1"
     />
   );
 };

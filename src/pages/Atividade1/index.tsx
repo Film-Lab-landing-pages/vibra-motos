@@ -18,6 +18,7 @@ import {
 } from "./styles";
 import { NextButton } from "../../styles/ButtonStyles";
 import { withPageLoader } from "../../hoc/withPageLoader";
+import { useScorm } from "../../hooks/useScorm";
 import atividadeIcon from "../../assets/atividade.png";
 import atividade11 from "../../assets/atividade-1-1.png";
 import atividade12 from "../../assets/atividade-1-2.png";
@@ -36,28 +37,31 @@ const CONNECTIONS_DATA: Connection[] = [
   {
     id: 1,
     leftText: "Excesso de velocidade",
-    rightText:
-      "O uso correto reduz em até 70% o risco de morte em colisões (OMS).",
+    rightText: "Responsável por boa parte dos acidentes graves.",
     icon: atividade11,
     connected: false,
   },
   {
     id: 2,
     leftText: "Falta de capacete",
-    rightText: "Aumenta exponencialmente as chances de colisão lateral.",
+    rightText:
+      "O uso correto reduz em até 70% o risco de morte em colisões (OMS).",
     icon: atividade12,
     connected: false,
   },
   {
     id: 3,
     leftText: "Zigue-zague no corredor",
-    rightText: "Responsável por boa parte dos acidentes graves.",
+    rightText: "Aumenta exponencialmente as chances de colisão lateral.",
     icon: atividade13,
     connected: false,
   },
 ];
 
 const Atividade1Base: React.FC = () => {
+  const navigate = useNavigate();
+  const { reportProgress } = useScorm();
+
   // Embaralhar os itens da direita
   const [rightItems] = useState(() => {
     const items = [...CONNECTIONS_DATA];
@@ -68,7 +72,8 @@ const Atividade1Base: React.FC = () => {
   const [activeConnection, setActiveConnection] = useState<number | null>(null);
   const [lines, setLines] = useState<{ from: number; to: number }[]>([]);
   const [errorDot, setErrorDot] = useState<number | null>(null);
-  const navigate = useNavigate();
+  const [hasReportedCompletion, setHasReportedCompletion] = useState(false);
+
   const leftRefs = useRef<(HTMLDivElement | null)[]>([]);
   const rightRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -76,6 +81,18 @@ const Atividade1Base: React.FC = () => {
   const completedConnections = connections.filter((c) => c.connected).length;
   const progress = (completedConnections / totalConnections) * 100;
   const isCompleted = completedConnections === totalConnections;
+
+  // Reporta conclusão da atividade ao SCORM quando completada
+  useEffect(() => {
+    if (isCompleted && !hasReportedCompletion && reportProgress) {
+      reportProgress({
+        score: 100,
+        completion: "incomplete", // Mantém como incomplete até o curso todo ser concluído
+        success: "passed",
+      });
+      setHasReportedCompletion(true);
+    }
+  }, [isCompleted, hasReportedCompletion, reportProgress]);
 
   const handleLeftDotClick = (id: number) => {
     const conn = connections.find((c) => c.id === id);
@@ -108,7 +125,7 @@ const Atividade1Base: React.FC = () => {
 
   const handleAdvance = () => {
     if (isCompleted) {
-      navigate("/retrovisor2"); // Ajustar para a rota correta
+      navigate("/parada2"); // Ajustar para a rota correta
     }
   };
 

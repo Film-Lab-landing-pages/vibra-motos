@@ -8,6 +8,8 @@ import motoDobra from "../../assets/moto-dobra.png";
 import semaforo from "../../assets/semaforo.png";
 import PitstopTitle from "../../components/PitstopTitle";
 import avancar from "../../assets/avancar.png";
+import videoTest from "../../assets/video-abertura.webm";
+import teaserVideo from "../../assets/video-teaser.mp4";
 
 import {
   ModuleMain,
@@ -32,6 +34,13 @@ const Modulo1Base = () => {
         <BackgroundImages>
           <img className="marca" src={marcaFundo} alt="" />
           <img className="intro-image" src={motoDobra} alt="" />
+          <video
+            className="video-test"
+            src={videoTest}
+            autoPlay
+            loop
+            muted
+          ></video>
         </BackgroundImages>
 
         <ModuleContainer>
@@ -50,13 +59,12 @@ const Modulo1Base = () => {
       </IntroSection>
       <VideoSection>
         <div className="video-container">
-          <iframe
-            src="https://www.youtube.com/embed/NpEaa2P7qZI"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <video
+            src={teaserVideo}
+            title="Teaser Vibra Motos"
+            controls
+            width="100%"
+          ></video>
         </div>
         <NextButton onClick={handleNext}>
           <img src={avancar} alt="Avançar" />

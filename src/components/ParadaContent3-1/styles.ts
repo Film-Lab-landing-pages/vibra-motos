@@ -31,7 +31,11 @@ export const Text = styled(FramedTextTarja1)`
 `;
 
 export const Title = styled(BaseTitle)`
-  margin-bottom: 0;
+  margin: 0 auto;
+
+  .number {
+    line-height: 0.75;
+  }
   .title-text span {
     font-size: 64px;
   }
@@ -48,7 +52,7 @@ export const VideoSection = styled.section`
   align-items: center;
 
   .video-container {
-    width: 80%;
+    width: 70%;
     padding: 1rem;
     background: linear-gradient(to right, #7d7676ff, #3f3b3bff, #686767ff);
     border-radius: 16px;
@@ -56,10 +60,12 @@ export const VideoSection = styled.section`
     box-shadow: 4px 10px 12px rgba(0, 0, 0, 0.5);
   }
 
-  iframe {
+  video {
     width: 100%;
-    aspect-ratio: 16/9;
+    height: 100%;
     border: none;
     border-radius: 12px;
+    display: block;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.7);
   }
 `;

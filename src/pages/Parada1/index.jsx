@@ -93,14 +93,14 @@ const Parada1Content = () => {
     // Fecha a modal
     setIsModalOpen(false);
 
-    // Se não é o último, apenas abre o próximo anchor (mas não a modal)
-    if (activeContentId < TOTAL_CONTENTS) {
+    // Se é o último conteúdo, navega para o próximo destino
+    if (activeContentId === TOTAL_CONTENTS) {
+      navigate("/retrovisor1");
+    } else {
+      // Se não é o último, apenas abre o próximo anchor (mas não a modal)
       const nextContentId = activeContentId + 1;
       setActiveContent(nextContentId);
       updateProgression(nextContentId);
-    } else {
-      // Último conteúdo visitado
-      updateProgression(activeContentId);
     }
   };
 

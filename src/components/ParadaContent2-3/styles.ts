@@ -40,7 +40,7 @@ export const Card = styled(FramedTextTarja2)`
 
   > div {
     border-radius: 16px 16px 0 0;
-    padding: 2.2rem 2rem;
+    padding: 0;
   }
 
   .carousel-flex.slide-0 {

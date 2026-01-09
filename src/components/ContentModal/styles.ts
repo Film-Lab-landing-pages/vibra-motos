@@ -44,7 +44,7 @@ export const ModalCard = styled.div<{ $isOpen: boolean }>`
   border-radius: 20px;
   max-width: 1200px;
   width: 90%;
-  max-height: 85vh;
+  max-height: 92vh;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   display: flex;

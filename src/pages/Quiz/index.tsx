@@ -51,7 +51,7 @@ const QuizBase: React.FC = () => {
   const handleCourseComplete = () => {
     // Calcular score total
     const totalScore = calculateScore();
-    const passed = totalScore.correct >= 8; // Mínimo 8 de 10 para passar
+    const passed = totalScore.correct >= 6; // Mínimo 6 de 10 para passar
 
     // Marcar curso como completo no SCORM
     if (completeLesson && typeof completeLesson === "function") {

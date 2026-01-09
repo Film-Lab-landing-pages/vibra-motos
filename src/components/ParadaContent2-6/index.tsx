@@ -65,15 +65,7 @@ const ParadaContent2_6: React.FC<ParadaContent2_6Props> = ({
           </Paragraphs>
         </Text>
 
-        <ContentVideo
-          className="content-image"
-          src={image}
-          width={"45%"}
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
+        <ContentVideo className="content-image" src={image} width={"45%"} />
       </div>
     </ContentWrapper>
   );
