@@ -50,13 +50,14 @@ export const Card = styled(FramedTextTarja2)`
   .carousel-flex {
     display: flex;
     gap: 2rem;
-    align-items: flex-end;
+    align-items: center;
     .carousel-img {
       flex: 2;
       position: relative;
       width: 100%;
       display: flex;
       align-items: flex-end;
+      align-self: flex-end;
 
       video {
         width: 140%;

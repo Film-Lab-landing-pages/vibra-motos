@@ -27,8 +27,25 @@
     <resource identifier="RES-01" type="webcontent" adlcp:scormtype="sco" href="index.html">
       <file href="index.html"/>
             <file href="assets/acerto.png"/>
+      <file href="assets/atividade-1-1.png"/>
+      <file href="assets/atividade-1-2.png"/>
+      <file href="assets/atividade-1-3.png"/>
+      <file href="assets/atividade-2-boneco.png"/>
+      <file href="assets/atividade-2-botas-boneco.png"/>
+      <file href="assets/atividade-2-botas.png"/>
+      <file href="assets/atividade-2-capacete-boneco.png"/>
+      <file href="assets/atividade-2-capacete.png"/>
+      <file href="assets/atividade-2-chinelo.png"/>
+      <file href="assets/atividade-2-jaqueta-boneco.png"/>
+      <file href="assets/atividade-2-jaqueta.png"/>
+      <file href="assets/atividade-2-joelheira-boneco.png"/>
+      <file href="assets/atividade-2-joelheira.png"/>
+      <file href="assets/atividade-2-luvas-boneco.png"/>
+      <file href="assets/atividade-2-luvas-forno.png"/>
+      <file href="assets/atividade-2-luvas.png"/>
+      <file href="assets/atividade-2-oculos.png"/>
+      <file href="assets/atividade.png"/>
       <file href="assets/avancar.png"/>
-      <file href="assets/back.png"/>
       <file href="assets/concluir.png"/>
       <file href="assets/destino-final.png"/>
       <file href="assets/erro.png"/>
@@ -58,6 +75,7 @@
       <file href="assets/img-parada-1-3.png"/>
       <file href="assets/img-parada-1-4.png"/>
       <file href="assets/img-parada-1-5.png"/>
+      <file href="assets/img-parada-1-5.webm"/>
       <file href="assets/img-parada-1-6.png"/>
       <file href="assets/img-parada-1-7-1.png"/>
       <file href="assets/img-parada-1-7-2.png"/>
@@ -83,9 +101,16 @@
       <file href="assets/mapa-moto.png"/>
       <file href="assets/marca-dobra.png"/>
       <file href="assets/moto-dobra.png"/>
+      <file href="assets/moto-dobra.webm"/>
+      <file href="assets/placa-parar.png"/>
       <file href="assets/placa.png"/>
       <file href="assets/quiz-background.png"/>
       <file href="assets/quiz-title.png"/>
+      <file href="assets/refactor-1-2-1.png"/>
+      <file href="assets/refactor-1-2-2.png"/>
+      <file href="assets/refactor-1-2-3.png"/>
+      <file href="assets/refactor-2-3-2.png"/>
+      <file href="assets/refactor-2-3-3-.png"/>
       <file href="assets/reiniciar.png"/>
       <file href="assets/retrovisor-back-2.png"/>
       <file href="assets/retrovisor-back-3.png"/>
@@ -97,6 +122,7 @@
       <file href="assets/roadmap2.png"/>
       <file href="assets/roadmap3.png"/>
       <file href="assets/semaforo.png"/>
+      <file href="assets/seta-retornar.png"/>
       <file href="assets/seta.png"/>
       <file href="assets/sinal-amarelo.png"/>
       <file href="assets/sinal-verde.png"/>
@@ -105,6 +131,14 @@
       <file href="assets/tarja-listra.jpg"/>
       <file href="assets/tarja-listra.png"/>
       <file href="assets/tarja-paradas.png"/>
+      <file href="assets/video-armadura.mp4"/>
+      <file href="assets/video-cego.mp4"/>
+      <file href="assets/video-parada-1-3.webm"/>
+      <file href="assets/video-parada-1-6.webm"/>
+      <file href="assets/video-parada-2-3.webm"/>
+      <file href="assets/video-parada-2-6.webm"/>
+      <file href="assets/video-parada-3-2.webm"/>
+      <file href="assets/video-teaser.mp4"/>
     </resource>
   </resources>
   
