@@ -44,23 +44,16 @@ const ParadaContent2_6: React.FC<ParadaContent2_6Props> = ({
       <div className="flex">
         <Text>
           <Paragraphs>
-            <NormalParagraph>
-              A segurança não depende apenas da moto ou dos equipamentos, mas
-              principalmente das atitudes diárias do motociclista.
-            </NormalParagraph>
-
             <TitledList
               items={[
-                "Respeitar limites de velocidade: eles são definidos após estudos técnicos sobre as vias.",
-                "Nunca pilotar alcoolizado ou sob efeito de drogas: o álcool reduz em até 30% os reflexos e triplica o risco de acidentes.",
-                "Evitar disputas no trânsito: a moto pode ser ágil, mas não resiste a uma colisão com carros ou caminhões.",
-                "Planejar rotas: escolher caminhos iluminados e seguros reduz o risco de assaltos e colisões.",
-                "Descansar antes de pilotar: fadiga tem efeitos semelhantes à embriaguez. Uma noite mal dormida pode reduzir a atenção em até 50%.",
+                "Em São Paulo, motociclistas sem capacete têm 3 vezes mais chance de morrer em acidentes do que aqueles que utilizam o equipamento corretamente (Infosiga-SP).",
+                "Estudo da Abramet (2022) revelou que o uso completo de equipamentos de proteção reduziu em até 60% a gravidade das lesões analisadas.",
+                "Pesquisas da PRF apontam que falhas simples como pneus carecas ou freios gastos estão presentes em 20% dos acidentes com motos em rodovias federais.",
               ]}
             />
             <NormalParagraph>
-              Cada decisão responsável aumenta exponencialmente a chance de
-              chegar bem ao destino.
+              Esses dados não deixam dúvidas: prevenção é o caminho mais eficaz
+              para salvar vidas.
             </NormalParagraph>
           </Paragraphs>
         </Text>
